@@ -3,10 +3,11 @@ function logger(req, res, next) {
   next();
 }
 
-function validateUserId(req, res, next) {
+const validateUserId = (users) => (req, res, next) => {
   const id = req.params.id;
   if (id) {
-    Users.getById(id)
+    users
+      .getById(id)
       .then((user) => {
         if (user) {
           req.user = user;
@@ -25,7 +26,7 @@ function validateUserId(req, res, next) {
   } else {
     next();
   }
-}
+};
 
 function validateUser(req, res, next) {
   if (!Object.keys(req.body).length) {
