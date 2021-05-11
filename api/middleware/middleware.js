@@ -4,7 +4,27 @@ function logger(req, res, next) {
 }
 
 function validateUserId(req, res, next) {
-  // DO YOUR MAGIC
+  const id = req.params.id;
+  if (id) {
+    Users.getById(id)
+      .then((user) => {
+        if (user) {
+          req.user = user;
+          next();
+        } else {
+          res.status(404).json({
+            message: "user not found",
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({
+          message: "Something happened",
+        });
+      });
+  } else {
+    next();
+  }
 }
 
 function validateUser(req, res, next) {
