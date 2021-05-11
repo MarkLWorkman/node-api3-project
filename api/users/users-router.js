@@ -84,10 +84,19 @@ router.get("/:id/posts", (req, res) => {
 });
 
 router.post("/:id/posts", validatePost, (req, res) => {
-  // RETURN THE NEWLY CREATED USER POST
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
+  posts
+    .insert({
+      ...req.body,
+      user_id: req.user.id,
+    })
+    .then((post) => {
+      res.status(200).json(post);
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Error trying to post",
+      });
+    });
 });
 
-// do not forget to export the router
 module.exports = router;
