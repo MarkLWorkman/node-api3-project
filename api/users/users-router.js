@@ -45,7 +45,15 @@ router.post("/", validateUser, (req, res) => {
     });
 });
 
-router.put("/:id", validateUser, (req, res) => {});
+router.put("/:id", validateUser, (req, res) => {
+  users.update(req.params.id, req.body).then((count) => {
+    if (count) {
+      users.getById(req.params.id).then((user) => {
+        res.status(200).json(user);
+      });
+    }
+  });
+});
 
 router.delete("/:id", (req, res) => {
   users
