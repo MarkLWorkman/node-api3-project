@@ -45,15 +45,21 @@ router.post("/", validateUser, (req, res) => {
     });
 });
 
-router.put("/:id", validateUser, (req, res) => {
-  // RETURN THE FRESHLY UPDATED USER OBJECT
-  // this needs a middleware to verify user id
-  // and another middleware to check that the request body is valid
-});
+router.put("/:id", validateUser, (req, res) => {});
 
 router.delete("/:id", (req, res) => {
-  // RETURN THE FRESHLY DELETED USER OBJECT
-  // this needs a middleware to verify user id
+  users
+    .remove(req.params.id)
+    .then((count) => {
+      if (count) {
+        res.status(200).json(req.user);
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Error deleting user",
+      });
+    });
 });
 
 router.get("/:id/posts", (req, res) => {
